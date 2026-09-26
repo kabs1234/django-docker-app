@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ info.name }}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    table { border-collapse: collapse; }
+    th, td { text-align: left; padding: 0.25rem 1.5rem 0.25rem 0; }
+  </style>
+</head>
+<body>
+  <h1>{{ info.name }}</h1>
+  <p>Hello from a Django app running inside a Docker container.</p>
+  <table>
+    <tr><th>Environment (APP_ENV)</th><td>{{ info.env }}</td></tr>
+    <tr><th>Port (PORT)</th><td>{{ info.port }}</td></tr>
+    <tr><th>Debug (DJANGO_DEBUG)</th><td>{{ info.debug }}</td></tr>
+    <tr><th>Container hostname</th><td>{{ info.hostname }}</td></tr>
+    <tr><th>Python version</th><td>{{ info.python }}</td></tr>
+  </table>
+  <p><a href="/health/">Health check</a> | <a href="/api/info/">Info as JSON</a></p>
+</body>
+</html>
