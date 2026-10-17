@@ -5,14 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ info.name }}</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    body { font-family: system-ui, sans-serif; max-width: 48rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
     table { border-collapse: collapse; }
     th, td { text-align: left; padding: 0.25rem 1.5rem 0.25rem 0; }
+    td.url { word-break: break-all; }
+    pre { background: #f4f4f4; padding: 0.75rem; overflow-x: auto; }
   </style>
 </head>
 <body>
   <h1>{{ info.name }}</h1>
-  <p>Hello from a Django app running inside a Docker container.</p>
+  <p>A URL shortener running on Django and PostgreSQL with Docker Compose.</p>
+
+  <h2>Top links</h2>
+  {% if links %}
+  <table>
+    <tr><th>Code</th><th>Target</th><th>Clicks</th></tr>
+    {% for link in links %}
+    <tr>
+      <td><a href="/s/{{ link.code }}/">{{ link.code }}</a></td>
+      <td class="url">{{ link.target_url }}</td>
+      <td>{{ link.clicks }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No links yet. Create one:</p>
+  {% endif %}
+  <pre>curl -X POST http://localhost:{{ info.port }}/api/links/ \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://www.djangoproject.com/", "code": "django"}'</pre>
+
+  <h2>Instance</h2>
   <table>
     <tr><th>Environment (APP_ENV)</th><td>{{ info.env }}</td></tr>
     <tr><th>Port (PORT)</th><td>{{ info.port }}</td></tr>
@@ -20,6 +43,6 @@
     <tr><th>Container hostname</th><td>{{ info.hostname }}</td></tr>
     <tr><th>Python version</th><td>{{ info.python }}</td></tr>
   </table>
-  <p><a href="/health/">Health check</a> | <a href="/api/info/">Info as JSON</a></p>
+  <p><a href="/api/links/">Links as JSON</a> | <a href="/health/">Health check</a> | <a href="/api/info/">Info as JSON</a></p>
 </body>
 </html>

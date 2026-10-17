@@ -16,7 +16,7 @@ def env_list(name: str, default: str) -> list[str]:
 
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
-SECRET_KEY: str = os.environ.get("DJANGO_SECRET_KEY", "dev-insecure-secret-key-change-me")
+SECRET_KEY: str = os.environ["DJANGO_SECRET_KEY"]
 DEBUG: bool = env_flag("DJANGO_DEBUG")
 ALLOWED_HOSTS: list[str] = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
 
@@ -45,7 +45,21 @@ TEMPLATES = [
     },
 ]
 
-DATABASES: dict[str, dict[str, str]] = {}
+DB_CONN_MAX_AGE_SECONDS = 60
+
+DATABASES: dict[str, dict[str, str | int]] = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
+        "NAME": os.environ["POSTGRES_DB"],
+        "USER": os.environ["POSTGRES_USER"],
+        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        "CONN_MAX_AGE": DB_CONN_MAX_AGE_SECONDS,
+    }
+}
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
