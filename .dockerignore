@@ -12,6 +12,7 @@ env/
 .pytest_cache/
 
 .env
+.env.*
 *.sqlite3
 *.log
 
@@ -20,4 +21,6 @@ Thumbs.db
 
 Dockerfile
 .dockerignore
+compose.yaml
+docker-compose.yml
 README.md
